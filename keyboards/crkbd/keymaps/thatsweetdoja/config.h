@@ -18,27 +18,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-/*
-#define VIAL_KEYBOARD_UID {0x3B, 0x6B, 0xA0, 0x29, 0x80, 0x56, 0xED, 0xD1}
-#define VIAL_UNLOCK_COMBO_ROWS {0, 0}
-#define VIAL_UNLOCK_COMBO_COLS {0, 1}
-#define DYNAMIC_KEYMAP_LAYER_COUNT 3
-*/
-
 #undef LOCKING_SUPPORT_ENABLE
 #undef LOCKING_RESYNC_ENABLE
 
 #define PIMORONI_TRACKBALL_ENABLE
-#define PIMORONI_TRACKBALL_CLICK
 // orientation pimoroni text on top and trackball text at the bottom
 #define PIMORONI_TRACKBALL_ROTATE
-#define PIMORONI_TRACKBALL_SCALE
 
-//#define OLED_TIMEOUT 0
-//#define SPLIT_WPM_ENABLE
-//#define SPLIT_MODS_ENABLE
-//#define SPLIT_WPM_ENABLE
-//#define SPLIT_OLED_ENABLE
+#define SPLIT_OLED_ENABLE
+#define SPLIT_MAX_CONNECTION_ERRORS 10
 
 #define TAPPING_TOGGLE 2
 #define TAPPING_TERM 165
@@ -60,7 +48,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef RGBLIGHT_ENABLE
 #    undef  RGBLED_ANIM
 #    define RGBLIGHT_EFFECT_TWINKLE
-#    define RGBLIGHT_EFFECT_TWINKLE_LIFE 500
+#    define RGBLIGHT_EFFECT_TWINKLE_PROBABILITY 1/2
 #    undef  RGBLED_NUM
 #    define RGBLED_NUM 54
 #    undef  RGBLED_SPLIT
