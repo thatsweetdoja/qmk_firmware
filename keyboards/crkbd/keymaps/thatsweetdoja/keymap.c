@@ -7,17 +7,25 @@
 
 enum layer_names {
     _BASE,
-    _LOWER,
-	 _RAISE,
-    _ADJUST
+    _SYM,
+    _NUM,
+	 _NAV,
+    _ADJ
 };
 
-#define LOWER   LT(_LOWER, KC_SPACE)
-#define RAISE   LT(_RAISE, KC_TAB)
-#define ADJUST  LT(_ADJUST, KC_SPACE)
-#define CTLTAB  LCTL_T(KC_TAB)
-#define SFTBSPC LSFT_T(KC_BSPC)
+enum custom_keycodes {
+  TB_SCR = SAFE_RANGE, //set trackball scrolling mode
+};
 
+#define SYM     LT(_SYM, KC_SPACE)
+#define NUM     LT(_NUM, KC_TAB)
+#define ADJGUI  LT(_ADJ, KC_LGUI)
+#define CTLTAB  LCTL_T(KC_TAB)
+#define CTLCAP  LCTL_T(KC_CAPS)
+#define SFTBSPC RSFT_T(KC_BSPC)
+#define G_SLSH  LGUI_T(KC_SLSH)
+#define A_DOT   LALT_T(KC_DOT)
+#define LCTLSFT LCTL(KC_LSFT)
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -25,39 +33,51 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
      KC_GESC, KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                         KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-     CTLTAB,  KC_A,    KC_R,    KC_S,    KC_T,    KC_D,                         KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    KC_SFTENT,
+     CTLTAB,  KC_A,    KC_R,    KC_S,    KC_T,    KC_D,                         KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    KC_ENTER,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
+     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_K,    KC_M,    KC_COMM, A_DOT,   G_SLSH,  KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                         KC_LGUI, LOWER,   RAISE,      SFTBSPC, KC_SPC,  KC_BSPC
+                                         ADJGUI,  SYM,     NUM,        SFTBSPC, KC_SPC,  KC_SCLN
                                       //`--------------------------'  `--------------------------'
   ),
 
-  [_LOWER] = LAYOUT_split_3x6_3(
+    [_NUM] = LAYOUT_split_3x6_3(   
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-     KC_GESC, XXXXXXX, KC_HOME, KC_UP,   KC_END,  KC_PGUP,                      XXXXXXX, XXXXXXX, KC_WH_U, XXXXXXX, XXXXXXX, KC_BSPC,
+     KC_GESC, KC_0,    KC_6,    KC_7,    KC_8,    KC_9,                         KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-     KC_CAPS,  XXXXXXX, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN,                     XXXXXXX, KC_WH_L, KC_WH_D, KC_WH_R, XXXXXXX, KC_ENTER,
+     CTLTAB,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_ENTER,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+     KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, KC_COMM, A_DOT,   G_SLSH,   KC_LSFT,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                         XXXXXXX, XXXXXXX, _______,    _______, _______,  _______
+                                      //`--------------------------'  `--------------------------'
+  ),
+
+  [_SYM] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+     KC_GESC, KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_BSPC,                      KC_PIPE, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_BSPC,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+     CTLCAP,  KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_ENTER,                     KC_BSLS, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_ENTER,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+     KC_LSFT, LCTLSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_LSFT,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                         XXXXXXX, _______, XXXXXXX,    _______, _______,  _______
+                                      //`--------------------------'  `--------------------------'
+  ),
+
+  [_NAV] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+     KC_GESC, KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_BSPC,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_BSPC,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+     CTLTAB,  KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_ENTER,                     TB_SCR,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_ENTER,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
      KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                         XXXXXXX, _______, XXXXXXX,    _______, ADJUST,  _______
+                                         XXXXXXX, XXXXXXX, _______,    _______, _______,  _______
                                       //`--------------------------'  `--------------------------'
   ),
 
-  [_RAISE] = LAYOUT_split_3x6_3(
-  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-     KC_GESC, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC,
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-     CTLTAB,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_ENTER,
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-     KC_LSFT, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE,                      KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS, KC_MINS,
-  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                         XXXXXXX, XXXXXXX, _______,    _______, ADJUST,  _______
-                                      //`--------------------------'  `--------------------------'
-  ),
-
-  [_ADJUST] = LAYOUT_split_3x6_3(
+  [_ADJ] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
      QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -70,13 +90,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 };
 
-bool set_scrolling = false;
 
 #ifndef MIN
 #    define MIN(a, b) ((a) < (b) ? (a) : (b))
 #endif
 
 #ifdef PIMORONI_TRACKBALL_ENABLE
+uint8_t tb_hue, tb_sat;
+int8_t tb_precision_speed = 3;
+bool tb_rgb_control = false, tb_set_scrolling = false, tb_rgb_changed = false;
+
 void trackball_set_hsv(uint8_t hue, uint8_t sat, uint8_t brightness) {
     RGB rgb = hsv_to_rgb((HSV){hue, sat, brightness});
     uint8_t white = MIN(rgb.r, MIN(rgb.g, rgb.b));
@@ -94,32 +117,43 @@ void trackball_sync_led(void) {
 }
 
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
-   #ifdef CONSOLE_ENABLE
-      if (mouse_report.x | mouse_report.y) {
-         uprintf("\n%d %d", mouse_report.x, mouse_report.y);
+   
+   if (mouse_report.x | mouse_report.y | mouse_report.buttons) {
+      if(tb_rgb_control) {           //rgb control mode (up/down hue, left/right sat)
+         tb_rgb_changed = true;
+         if(mouse_report.x) {
+            if(mouse_report.x > 0) {
+               if(tb_sat < 255) tb_sat++;
+            } else {
+               if(tb_sat > 0) tb_sat--;
+            }
+            mouse_report.x = 0;
+         }
+         if(mouse_report.y) {
+            tb_hue = (tb_hue + ((mouse_report.y > 0) ? 1 : -1)) % 255;
+            mouse_report.y = 0;
+         }
+         trackball_set_hsv(tb_hue, tb_sat, 255);
+         if(mouse_report.buttons) {
+            rgblight_sethsv(tb_hue, tb_sat, rgblight_get_val());
+            mouse_report.buttons = 0;
+         }
+      } else if(IS_LAYER_ON(_NUM)) { //precision mode (slow pointer speed)
+         if(mouse_report.x) {
+            mouse_report.x = (mouse_report.x > 0) ? tb_precision_speed : -tb_precision_speed;
+         }
+         if(mouse_report.y) {
+            mouse_report.y = (mouse_report.y > 0) ? tb_precision_speed : -tb_precision_speed;
+         }
+      } else if(IS_LAYER_ON(_SYM)) { //scroll mode
+         mouse_report.x = 0;
+         if(mouse_report.y) {
+            mouse_report.v = (mouse_report.y > 0) ? 1 : -1;
+            mouse_report.y = 0;
+         }
       }
-   #endif 
-
-   if(set_scrolling) {
-      if (mouse_report.x > 0) {
-         mouse_report.h = 1;
-      } else if (mouse_report.x < 0) {
-         mouse_report.h = -1;
-      } else {
-         mouse_report.h = 0;
-      }
-
-      if (mouse_report.y > 0) {
-         mouse_report.v = 1;
-      } else if (mouse_report.y < 0) {
-         mouse_report.v = -1;
-      } else {
-         mouse_report.v = 0;
-      }
-
-      mouse_report.x = 0;
-      mouse_report.y = 0;
    }
+
    return mouse_report;
 }
 #endif //PIMORONI_TRACKBALL_ENABLE
@@ -142,42 +176,104 @@ bool oled_task_user(void) {
 }
 #endif //OLED_ENABLE
 
-uint8_t layer_hue_offset = -80;
-uint8_t min_layer_sat = 255;
-uint8_t base_hue;
+
 void keyboard_post_init_user(void) {
-   base_hue = rgblight_get_hue();
    #ifdef PIMORONI_TRACKBALL_ENABLE
-      pointing_device_set_cpi(40000);
+      tb_hue = rgblight_get_hue();
+      tb_sat = rgblight_get_sat();
       trackball_sync_led();
+      pointing_device_set_cpi(35000);
    #endif
-   debug_enable=true;
-   print("x : y");
 }
 
+//uint8_t layer_hue_offset = 40;
+//uint8_t min_layer_sat = 255;
+//uint8_t base_hue;
 layer_state_t layer_state_set_user(layer_state_t state) {
-   
-   rgblight_sethsv_noeeprom(base_hue + (layer_hue_offset * get_highest_layer(state)) % 255,
-      MIN(min_layer_sat, rgblight_get_sat()),
-      rgblight_get_val()
-   );
-
+//   uint8_t sat = rgblight_get_sat();
+//   uint8_t val = rgblight_get_val();
+//
+//   if(get_highest_layer(state) == _ADJ) {
+//      rgblight_sethsv(base_hue, sat, val);
+//   } else {
+//      rgblight_sethsv_noeeprom(base_hue + (layer_hue_offset * get_highest_layer(state)) % 255,
+//         MIN(min_layer_sat, sat), val);
+//   }
    #ifdef PIMORONI_TRACKBALL_ENABLE
-      trackball_sync_led();
+      if(IS_LAYER_ON_STATE(state, _ADJ)) {
+         tb_rgb_control = true;
+      } else if(tb_rgb_changed) {
+         tb_rgb_control = false;
+         trackball_sync_led();
+         tb_rgb_changed = false;  
+      }
    #endif
-   
    return state;                       
 }
-   
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-   if(get_mods() & MOD_MASK_SHIFT) {
-      set_scrolling = true;
-   } else {
-      if(set_scrolling) set_scrolling = false;
+   uint8_t mod_state = get_mods();
+   switch (keycode) {
+      case TB_SCR:
+         if (record->event.pressed) {
+            tb_set_scrolling = !tb_set_scrolling;
+         } 
+         break;       
+      case KC_BSPC: {
+            static bool delkey_registered;
+            if (record->event.pressed) {
+               if (mod_state & MOD_MASK_SHIFT) {
+                  del_mods(MOD_MASK_SHIFT);
+                  register_code(KC_DEL);
+                  delkey_registered = true;
+                  set_mods(mod_state);
+                  return false;
+               }
+            } else {
+               if (delkey_registered) {
+                  unregister_code(KC_DEL);
+                  delkey_registered = false;
+                  return false;
+               }
+            }
+            return true;
+      }
+      case RGB_HUI:
+         if(!record->event.pressed) {
+            //base_hue = rgblight_get_hue(); // on key release, update base hue
+            #ifdef PIMORONI_TRACKBALL_ENABLE
+               trackball_sync_led();
+            #endif
+         }
+         return true;
+      case RGB_HUD:
+         if(!record->event.pressed) {
+            //base_hue = rgblight_get_hue();
+            #ifdef PIMORONI_TRACKBALL_ENABLE
+               trackball_sync_led();
+            #endif
+         }
+         return true;
+      case KC_LGUI:
+         if(record->event.pressed) {
+            #ifdef PIMORONI_TRACKBALL_ENABLE
+               tb_rgb_control = true;
+            #endif
+         } else {
+            #ifdef PIMORONI_TRACKBALL_ENABLE
+               tb_rgb_control = false;
+               trackball_sync_led();
+               if(tb_rgb_changed) {
+                  unregister_mods(MOD_MASK_GUI);
+                  tb_rgb_changed = false;
+                  return false;
+               }
+            #endif
+         }
+         return true;
+      default:
+         return true; // Process all other keycodes normally
    }
    return true;
 }
 
-//uint8_t pointing_device_handle_buttons(uint8_t buttons, bool pressed, pointing_device_buttons_t button) {//
-
-//}

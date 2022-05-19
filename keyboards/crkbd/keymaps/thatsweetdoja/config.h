@@ -29,8 +29,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SPLIT_MAX_CONNECTION_ERRORS 10
 
 #define TAPPING_TOGGLE 2
-#define TAPPING_TERM 165
-#define IGNORE_MOD_TAP_INTERRUPT
+#define TAPPING_TERM 175
+#define PERMISSIVE_HOLD
 
 //#define USE_MATRIX_I2C
 #ifdef KEYBOARD_crkbd_rev1_legacy
@@ -55,7 +55,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define RGBLED_SPLIT \
         { 27, 27 }
 #    define RGBLIGHT_LIMIT_VAL 120
-#    define RGBLIGHT_HUE_STEP  17
+#    define RGBLIGHT_HUE_STEP  10
 #    define RGBLIGHT_SAT_STEP  17
 #    define RGBLIGHT_VAL_STEP  17
 #endif

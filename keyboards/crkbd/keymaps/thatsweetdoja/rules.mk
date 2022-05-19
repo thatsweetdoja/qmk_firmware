@@ -5,8 +5,9 @@ OLED_DRIVER         = SSD1306
 
 EXTRAKEY_ENABLE     = yes
 LTO_ENABLE          = yes
-CONSOLE_ENABLE      = yes
-DEBUG_MOUSE         = yes
+TAP_DANCE_ENABLE    = no
+CONSOLE_ENABLE      = no
+DEBUG_MOUSE         = no
 COMBO_ENABLE        = no
 
 VIA_ENABLE          = no    # Enable VIA
