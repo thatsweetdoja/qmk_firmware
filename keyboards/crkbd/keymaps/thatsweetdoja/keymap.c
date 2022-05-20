@@ -3,6 +3,9 @@
 #include "pointing_device.h"
 #include "color.h"
 #include "print.h"
+#ifdef PIMORONI_SLAVE_SIDE
+   #include "transactions.h"
+#endif
 
 
 enum layer_names {
@@ -90,6 +93,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 };
 
+typedef struct _sync_rgbw_t {
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+    uint8_t w;
+} sync_rgbw_t;
+
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case A_DOT:
@@ -108,20 +118,35 @@ uint8_t tb_hue, tb_sat;
 int8_t tb_precision_speed = 3;
 bool tb_rgb_control = false, tb_set_scrolling = false, tb_rgb_changed = false;
 
-void trackball_set_hsv(uint8_t hue, uint8_t sat, uint8_t brightness) {
-    RGB rgb = hsv_to_rgb((HSV){hue, sat, brightness});
-    uint8_t white = MIN(rgb.r, MIN(rgb.g, rgb.b));
-    rgb.r -= white;
-    rgb.g -= white;
-    rgb.b -= white;
+void user_sync_a_handler(uint8_t in_buflen, const void* in_data, uint8_t out_buflen, void* out_data) {
+   const sync_rgbw_t* m2s = (const sync_rgbw_t*)in_data;
+   pimoroni_trackball_set_rgbw(m2s->r, m2s->g, m2s->b, m2s->w);
+}
 
-    pimoroni_trackball_set_rgbw(rgb.r, rgb.g, rgb.b, white);
+void trackball_set_hsv(uint8_t hue, uint8_t sat, uint8_t brightness) {
+   RGB rgb = hsv_to_rgb((HSV){hue, sat, brightness});
+   uint8_t white = MIN(rgb.r, MIN(rgb.g, rgb.b));
+   rgb.r -= white;
+   rgb.g -= white;
+   rgb.b -= white;
+
+   #ifdef PIMORONI_SLAVE_SIDE
+      if(is_keyboard_master()) {
+         sync_rgbw_t rgbw;
+         rgbw.r = rgb.r;
+         rgbw.g = rgb.g;
+         rgbw.b = rgb.b;
+         rgbw.w = white;
+         transaction_rpc_send(USER_SYNC_A, sizeof(rgbw), &rgbw);
+         return;
+      }
+   #endif
+   
+   pimoroni_trackball_set_rgbw(rgb.r, rgb.g, rgb.b, white);
 }
 
 void trackball_sync_led(void) {
-   #ifdef PIMORONI_TRACKBALL_ENABLE
       trackball_set_hsv(rgblight_get_hue(), rgblight_get_sat(), 255);
-   #endif
 }
 
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
@@ -180,6 +205,9 @@ bool oled_task_user(void) {
 
 void keyboard_post_init_user(void) {
    #ifdef PIMORONI_TRACKBALL_ENABLE
+      #ifdef PIMORONI_SLAVE_SIDE
+         transaction_register_rpc(USER_SYNC_A, user_sync_a_handler);
+      #endif
       tb_hue = rgblight_get_hue();
       tb_sat = rgblight_get_sat();
       trackball_sync_led();
