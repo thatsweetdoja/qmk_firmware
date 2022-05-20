@@ -21,16 +21,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #undef LOCKING_SUPPORT_ENABLE
 #undef LOCKING_RESYNC_ENABLE
 
-#define PIMORONI_TRACKBALL_ENABLE
-// orientation pimoroni text on top and trackball text at the bottom
-#define PIMORONI_TRACKBALL_ROTATE
-
-#define SPLIT_OLED_ENABLE
+#define MASTER_LEFT
+#define SPLIT_LAYER_STATE_ENABLE
+#define SPLIT_MODS_ENABLE
+#define SPLIT_WPM_ENABLE
 #define SPLIT_MAX_CONNECTION_ERRORS 10
+#define SPLIT_POINTING_ENABLE
+#define POINTING_DEVICE_RIGHT
+#define PIMORONI_TRACKBALL_ENABLE
+#define POINTING_DEVICE_ROTATION_90
+
 
 #define TAPPING_TOGGLE 2
 #define TAPPING_TERM 175
 #define PERMISSIVE_HOLD
+#define IGNORE_MOD_TAP_INTERRUPT
+#define GRAVE_ESC_CTRL_OVERRIDE
+#define TAPPING_TERM_PER_KEY
 
 //#define USE_MATRIX_I2C
 #ifdef KEYBOARD_crkbd_rev1_legacy
@@ -38,16 +45,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define USE_SERIAL
 #endif
 
-/* Select hand configuration */
-
-//#define MASTER_LEFT
-#define MASTER_RIGHT
-// #define EE_HANDS
-
 #define USE_SERIAL_PD2
 #ifdef RGBLIGHT_ENABLE
 #    undef  RGBLED_ANIM
 #    define RGBLIGHT_EFFECT_TWINKLE
+#    define RGBLIGHT_EFFECT_TWINKLE_LIFE 175
 #    define RGBLIGHT_EFFECT_TWINKLE_PROBABILITY 1/2
 #    undef  RGBLED_NUM
 #    define RGBLED_NUM 54
@@ -59,4 +61,3 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define RGBLIGHT_SAT_STEP  17
 #    define RGBLIGHT_VAL_STEP  17
 #endif
-
