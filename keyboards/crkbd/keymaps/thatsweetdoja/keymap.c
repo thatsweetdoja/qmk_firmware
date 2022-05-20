@@ -257,23 +257,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             #endif
          }
          return true;
-      case KC_LGUI:
-         if(record->event.pressed) {
-            #ifdef PIMORONI_TRACKBALL_ENABLE
-               tb_rgb_control = true;
-            #endif
-         } else {
-            #ifdef PIMORONI_TRACKBALL_ENABLE
-               tb_rgb_control = false;
-               trackball_sync_led();
-               if(tb_rgb_changed) {
-                  unregister_mods(MOD_MASK_GUI);
-                  tb_rgb_changed = false;
-                  return false;
-               }
-            #endif
-         }
-         return true;
+//      case KC_LGUI:
+//         if(record->event.pressed) {
+//            #ifdef PIMORONI_TRACKBALL_ENABLE
+//               tb_rgb_control = true;
+//            #endif
+//         } else {
+//            #ifdef PIMORONI_TRACKBALL_ENABLE
+//               tb_rgb_control = false;
+//               trackball_sync_led();
+//               if(tb_rgb_changed) {
+//                  unregister_mods(MOD_MASK_GUI);
+//                  tb_rgb_changed = false;
+//                  return false;
+//               }
+//            #endif
+//         }
+//         return true;
       default:
          return true; // Process all other keycodes normally
    }
